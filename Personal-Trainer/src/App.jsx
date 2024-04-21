@@ -1,5 +1,6 @@
 import { AppBar, Button, Toolbar, Typography } from '@mui/material';
 import { useState } from 'react';
+import './App.css';
 import Customer from './components/Customer';
 import Training from './components/Training';
 
@@ -18,7 +19,7 @@ function App() {
             Fitness Trainer
           </Typography>
         </Toolbar>
-        <Toolbar>
+        <Toolbar style={{ justifyContent: 'center' }}>
           <Button
             color={selectedTab === 'training' ? 'primary' : 'inherit'}
             onClick={() => handleTabChange('training')}
@@ -36,7 +37,7 @@ function App() {
 
       <Toolbar />
 
-      <div style={{ marginTop: '80px' }}> 
+      <div style={{ marginBottom: '30%' }}> 
         {selectedTab === 'training' ? <Training /> : <Customer />}
       </div>
     </>
