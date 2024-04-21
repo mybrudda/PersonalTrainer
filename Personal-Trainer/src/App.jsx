@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Customer from './components/Customer'
 
 
 function App() {
@@ -6,7 +7,7 @@ function App() {
 
   return (
     <>
-      
+      <Customer></Customer>
     </>
   )
 }
