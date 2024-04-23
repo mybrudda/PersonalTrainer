@@ -7,4 +7,15 @@
     
   }
   
+  .deleteButton {
+    background-color: rgb(201, 33, 33);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    cursor: pointer;
+  }
   
+  .deleteButton:hover {
+    background-color: darkred;
+  }

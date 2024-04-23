@@ -24,8 +24,8 @@ export default function Customer() {
   const columnDefs = [
     { headerName: "Firstname", field: "firstname", width: 150, sortable: true, filter: true },
     { headerName: "Lastname", field: "lastname", width: 150, sortable: true, filter: true },
-    { headerName: "Address", field: "streetaddress", width: 150, sortable: true, filter: true },
-    { headerName: "Postcode", field: "postcode", width: 150, sortable: true, filter: true },
+    { headerName: "Address", field: "streetaddress", width: 200, sortable: true, filter: true },
+    { headerName: "Postcode", field: "postcode", width: 100, sortable: true, filter: true },
     { headerName: "City", field: "city", width: 150, sortable: true, filter: true },
     { headerName: "Email", field: "email", width: 150, sortable: true, filter: true },
     { headerName: "Phone", field: "phone", width: 150, sortable: true, filter: true },
@@ -33,7 +33,7 @@ export default function Customer() {
       headerName: "Actions",
       width: 100,
       cellRenderer: (params) => (
-        <button onClick={() => handleDelete(params.data)}>Delete</button>
+        <button className="deleteButton" onClick={() => handleDelete(params.data)}>Delete</button>
       ),
     },
   ];
@@ -71,7 +71,7 @@ export default function Customer() {
     <div>
       <div
         className="ag-theme-material"
-        style={{ height: "500px", width: "1100px" }}
+        style={{ height: "500px", width: "1200px" }}
       >
         <AgGridReact
           rowSelection="single"
