@@ -29,10 +29,42 @@ export default function Customer() {
     { headerName: "City", field: "city", width: 150, sortable: true, filter: true },
     { headerName: "Email", field: "email", width: 150, sortable: true, filter: true },
     { headerName: "Phone", field: "phone", width: 150, sortable: true, filter: true },
+    {
+      headerName: "Actions",
+      width: 100,
+      cellRenderer: (params) => (
+        <button onClick={() => handleDelete(params.data)}>Delete</button>
+      ),
+    },
   ];
 
   const onGridReady = (params) => {
     setGridApi(params.api);
+  };
+
+  const handleDelete = (data) => {
+    const id = extractIdFromHref(data._links.self.href); 
+    fetch(`https://customerrestservice-personaltraining.rahtiapp.fi/api/customers/${id}`, {
+      method: "DELETE",
+    })
+      .then((response) => {
+        if (response.ok) {
+          // Delete the customer from the local state
+          setCustomers((prevCustomers) =>
+            prevCustomers.filter((customer) => customer.id !== id)
+          );
+          // Fetch the updated list of customers
+          fetchData();
+        } else {
+          throw new Error("Failed to delete customer");
+        }
+      })
+      .catch((error) => console.error("Error deleting customer:", error));
+  };
+
+  const extractIdFromHref = (href) => {
+    const parts = href.split("/");
+    return parts[parts.length - 1];
   };
 
   return (
