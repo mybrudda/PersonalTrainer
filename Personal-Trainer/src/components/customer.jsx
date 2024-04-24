@@ -33,13 +33,20 @@ export default function Customer() {
       headerName: "Actions",
       width: 100,
       cellRenderer: (params) => (
-        <button className="deleteButton" onClick={() => handleDelete(params.data)}>Delete</button>
+        <button className="deleteButton" onClick={() => confirmDelete(params.data)}>Delete</button>
       ),
     },
   ];
 
   const onGridReady = (params) => {
     setGridApi(params.api);
+  };
+
+  const confirmDelete = (data) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this customer?");
+    if (confirmDelete) {
+      handleDelete(data);
+    }
   };
 
   const handleDelete = (data) => {

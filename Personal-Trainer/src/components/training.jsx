@@ -14,37 +14,24 @@ export default function Training() {
 
   const fetchData = () => {
     fetch(
-      "https://customerrestservice-personaltraining.rahtiapp.fi/api/trainings"
+      "https://customerrestservice-personaltraining.rahtiapp.fi/gettrainings"
     )
       .then((response) => response.json())
       .then((data) => {
-        const promises = data._embedded.trainings.map((training) =>
-          fetch(training._links.customer.href).then((response) =>
-            response.json()
-          )
-        );
-
-        Promise.all(promises).then((customers) => {
-          const trainingData = data._embedded.trainings.map(
-            (training, index) => ({
-              ...training,
-              customer: customers[index],
-            })
-          );
-          setTrainings(trainingData);
-        });
+        setTrainings(data);
       })
       .catch((error) => console.error("Error fetching data:", error));
   };
 
-  const extractIdFromHref = (href) => {
-    const parts = href.split("/");
-    return parts[parts.length - 1];
+  const confirmDelete = (data) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this training?");
+    if (confirmDelete) {
+      handleDelete(data);
+    }
   };
 
   const handleDelete = (data) => {
-    const trainingId = extractIdFromHref(data._links.self.href);
-    console.log("Delete training with ID:", trainingId);
+    const trainingId = data.id;
 
     fetch(`https://customerrestservice-personaltraining.rahtiapp.fi/api/trainings/${trainingId}`, {
       method: "DELETE",
@@ -54,7 +41,6 @@ export default function Training() {
           setTrainings((prevTrainings) =>
             prevTrainings.filter((training) => training.id !== trainingId)
           );
-          fetchData();
         } else {
           throw new Error("Failed to delete training");
         }
@@ -81,14 +67,20 @@ export default function Training() {
       field: "customerName",
       sortable: true,
       filter: true,
-      valueGetter: (params) =>
-        `${params.data.customer.firstname} ${params.data.customer.lastname}`,
+      valueGetter: (params) => {
+        const customer = params.data.customer;
+        if (customer) {
+          return `${customer.firstname} ${customer.lastname}`;
+        } else {
+          return '';
+        }
+      },
     },
     {
       headerName: "Actions",
       width: 100,
       cellRenderer: (params) => (
-        <button className="deleteButton" onClick={() => handleDelete(params.data)}>Delete</button>
+        <button className="deleteButton" onClick={() => confirmDelete(params.data)}>Delete</button>
       ),
     },
   ];
