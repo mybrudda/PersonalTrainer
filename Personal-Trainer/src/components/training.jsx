@@ -60,7 +60,7 @@ export default function Training() {
       sortable: true,
       filter: true,
     },
-    { headerName: "Duration", field: "duration", width: 100, sortable: true, filter: true },
+    { headerName: "Duration", field: "duration", width: 150, sortable: true, filter: true },
     { headerName: "Activity", field: "activity", width: 200, sortable: true, filter: true },
     {
       headerName: "Customer",
