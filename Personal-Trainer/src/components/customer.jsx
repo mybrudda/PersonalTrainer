@@ -15,11 +15,15 @@ export default function Customer() {
   }, []);
 
   const fetchData = () => {
-    fetch(
-      "https://customerrestservice-personaltraining.rahtiapp.fi/api/customers"
-    )
+    fetch("https://customerrestservice-personaltraining.rahtiapp.fi/api/customers")
       .then((response) => response.json())
-      .then((data) => setCustomers(data._embedded.customers))
+      .then((data) => {
+        const customersWithId = data._embedded.customers.map((customer) => ({
+          ...customer,
+          id: extractIdFromHref(customer._links.self.href),
+        }));
+        setCustomers(customersWithId);
+      })
       .catch((error) => console.error("Error fetching data:", error));
   };
 
@@ -36,6 +40,7 @@ export default function Customer() {
   };
 
   const columnDefs = [
+    { headerName: "ID", field: "id", width: 100, sortable: true, filter: true },
     { headerName: "Firstname", field: "firstname", width: 150, sortable: true, filter: true },
     { headerName: "Lastname", field: "lastname", width: 150, sortable: true, filter: true },
     { headerName: "Address", field: "streetaddress", width: 200, sortable: true, filter: true },
