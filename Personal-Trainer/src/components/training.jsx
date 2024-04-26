@@ -3,7 +3,6 @@ import "ag-grid-community/styles/ag-theme-material.css";
 import { AgGridReact } from "ag-grid-react";
 import { format } from "date-fns";
 import React, { useEffect, useState } from "react";
-import AddTraining from "./AddTraining"; // Import the AddTraining component
 
 export default function Training() {
   const [trainings, setTrainings] = useState([]);
@@ -90,24 +89,11 @@ export default function Training() {
     setGridApi(params.api);
   };
 
-  const saveTraining = (newTraining) => {
-    fetch("https://customerrestservice-personaltraining.rahtiapp.fi/api/trainings", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newTraining),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setTrainings([...trainings, data]);
-      })
-      .catch((error) => console.error("Error saving training:", error));
-  };
+
 
   return (
     <div>
-      <AddTraining saveTraining={saveTraining} />
+      
       <div className="ag-theme-material" style={{ height: "500px", width: "1100px" }}>
         <AgGridReact
           rowSelection="single"
