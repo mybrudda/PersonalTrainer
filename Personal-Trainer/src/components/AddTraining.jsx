@@ -1,42 +1,14 @@
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import TextField from "@mui/material/TextField";
-import React, { useEffect, useState } from "react";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
+import React, { useState } from "react";
 
-export default function AddTraining(props) {
+export default function AddTraining({ saveTraining, customerId }) {
   const [open, setOpen] = useState(false);
   const [training, setTraining] = useState({
     date: "",
     duration: "",
     activity: "",
-    customerId: "",
+    customer: `https://customerrestservice-personaltraining.rahtiapp.fi/api/customers/${customerId}`,
   });
-  const [customers, setCustomers] = useState([]);
-
-  useEffect(() => {
-    fetch("https://customerrestservice-personaltraining.rahtiapp.fi/api/customers")
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Fetched customer data:", data); 
-        if (data && data._embedded && data._embedded.customers) {
-          const customerIds = data._embedded.customers.map((customer) => {
-            const customerId = parseInt(customer._links.customer.href.split("/").pop());
-            return customerId;
-          });
-          //Checking if it finds the all existing customer IDs
-          console.log("Fetched customer IDs:", customerIds);
-          setCustomers(customerIds);
-        } else {
-          console.error("Error: Customers data not found in the response");
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching customer data:", error);
-      });
-  }, []);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -47,19 +19,31 @@ export default function AddTraining(props) {
   };
 
   const handleChange = (event) => {
-    // Format the date value to match the expected format of datetime-local input
-    const formattedDate = event.target.value.replace(" ", "T");
-    setTraining({ ...training, [event.target.name]: formattedDate });
+    setTraining({ ...training, [event.target.name]: event.target.value });
   };
 
   const addTraining = () => {
-    // Check if the entered customer ID exists
-    if (customers.includes(parseInt(training.customerId))) {
-      props.saveTraining(training);
-      handleClose();
-    } else {
-      alert("Customer with the provided ID does not exist.");
-    }
+    fetch("https://customerrestservice-personaltraining.rahtiapp.fi/api/trainings", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(training),
+    })
+      .then((response) => {
+        if (response.ok) {
+          // Training added successfully
+          console.log("Training added successfully");
+          handleClose();
+        } else {
+          console.error("Failed to add training");
+          alert("Failed to add training. Please try again.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error adding training:", error);
+        alert("Error adding training. Please try again.");
+      });
   };
 
   return (
@@ -102,16 +86,17 @@ export default function AddTraining(props) {
             value={training.activity}
             onChange={handleChange}
           />
+          {/* This field is pre-filled with the dynamic customer reference link */}
           <TextField
             required
             margin="dense"
             fullWidth
             variant="standard"
-            type="number"
-            name="customerId"
-            label="Customer ID"
-            value={training.customerId}
+            name="customer"
+            label="Customer"
+            value={training.customer}
             onChange={handleChange}
+            disabled
           />
         </DialogContent>
         <DialogActions>

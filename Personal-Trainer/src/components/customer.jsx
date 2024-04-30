@@ -3,12 +3,13 @@ import "ag-grid-community/styles/ag-theme-material.css";
 import { AgGridReact } from "ag-grid-react";
 import React, { useEffect, useState } from "react";
 import AddCustomer from "./AddCustomer";
+import AddTraining from "./AddTraining";
 import EditCustomer from "./EditCustomer";
-
 
 export default function Customer() {
   const [customers, setCustomers] = useState([]);
   const [gridApi, setGridApi] = useState(null);
+  const [selectedCustomer, setSelectedCustomer] = useState(null);
 
   useEffect(() => {
     fetchData();
@@ -62,6 +63,15 @@ export default function Customer() {
         <EditCustomer updateCustomer={updateCustomer} customer={props.data} />
       ),
     },
+    {
+      headerName: "Add Training",
+      width: 200,
+      cellRenderer: (params) => (
+        <div>
+          <AddTraining customerId={params.data.id} /> // Pass customerId as a prop
+        </div>
+      ),
+    },
   ];
 
   const onGridReady = (params) => {
@@ -112,6 +122,9 @@ export default function Customer() {
     return parts[parts.length - 1];
   };
 
+  const handleAddTraining = (customer) => {
+    setSelectedCustomer(customer.id); // Set the selected customer ID
+  };
   return (
     <div>
        <div style={{ margin: "20px" }}>
