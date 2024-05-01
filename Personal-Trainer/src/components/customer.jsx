@@ -1,3 +1,4 @@
+import DeleteIcon from '@mui/icons-material/Delete';
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
 import { AgGridReact } from "ag-grid-react";
@@ -9,7 +10,6 @@ import EditCustomer from "./EditCustomer";
 export default function Customer() {
   const [customers, setCustomers] = useState([]);
   const [gridApi, setGridApi] = useState(null);
-  const [selectedCustomer, setSelectedCustomer] = useState(null);
 
   useEffect(() => {
     fetchData();
@@ -41,7 +41,6 @@ export default function Customer() {
   };
 
   const columnDefs = [
-    { headerName: "ID", field: "id", width: 100, sortable: true, filter: true },
     { headerName: "Firstname", field: "firstname", width: 150, sortable: true, filter: true },
     { headerName: "Lastname", field: "lastname", width: 150, sortable: true, filter: true },
     { headerName: "Address", field: "streetaddress", width: 200, sortable: true, filter: true },
@@ -53,7 +52,7 @@ export default function Customer() {
       headerName: "Actions",
       width: 100,
       cellRenderer: (params) => (
-        <button className="deleteButton" onClick={() => confirmDelete(params.data)}>Delete</button>
+        <DeleteIcon className="deleteButton" onClick={() => confirmDelete(params.data)}/>
       ),
     },
     {
@@ -68,7 +67,7 @@ export default function Customer() {
       width: 200,
       cellRenderer: (params) => (
         <div>
-          <AddTraining customerId={params.data.id} /> // Pass customerId as a prop
+          <AddTraining customerId={params.data.id} /> 
         </div>
       ),
     },
@@ -122,9 +121,7 @@ export default function Customer() {
     return parts[parts.length - 1];
   };
 
-  const handleAddTraining = (customer) => {
-    setSelectedCustomer(customer.id); // Set the selected customer ID
-  };
+  
   return (
     <div>
        <div style={{ margin: "20px" }}>
@@ -132,7 +129,7 @@ export default function Customer() {
       </div>
       <div
         className="ag-theme-material"
-        style={{ height: "500px", width: "1400px" }}
+        style={{ height: "500px", width: "1520px" }}
       >
         <AgGridReact
           rowSelection="single"

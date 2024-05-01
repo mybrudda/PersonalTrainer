@@ -1,3 +1,4 @@
+import EditIcon from '@mui/icons-material/Edit';
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -46,9 +47,8 @@ export default function EditCustomer(props) {
 
   return (
     <>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Edit
-      </Button>
+      <EditIcon variant="outlined" onClick={handleClickOpen}>
+      </EditIcon>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Edit Information</DialogTitle>
         <DialogContent>

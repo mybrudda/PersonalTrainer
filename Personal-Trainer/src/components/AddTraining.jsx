@@ -1,7 +1,7 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
 import React, { useState } from "react";
 
-export default function AddTraining({ saveTraining, customerId }) {
+export default function AddTraining({ customerId }) {
   const [open, setOpen] = useState(false);
   const [training, setTraining] = useState({
     date: "",
@@ -32,7 +32,6 @@ export default function AddTraining({ saveTraining, customerId }) {
     })
       .then((response) => {
         if (response.ok) {
-          // Training added successfully
           console.log("Training added successfully");
           handleClose();
         } else {
