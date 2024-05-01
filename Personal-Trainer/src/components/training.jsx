@@ -66,8 +66,12 @@ export default function Training() {
       headerName: "Customer",
       field: "customer",
       valueFormatter: (params) => {
+        if (!params.value || typeof params.value !== 'object') {
+          return null;
+        }
+        
         const { firstname, lastname } = params.value;
-        return `${firstname} ${lastname}`;
+        return `${firstname || 'null'} ${lastname || 'null'}`;
       },
       sortable: true,
       filter: true,

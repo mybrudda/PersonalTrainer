@@ -1,4 +1,11 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+} from "@mui/material";
 import React, { useState } from "react";
 
 export default function AddTraining({ customerId }) {
@@ -23,24 +30,25 @@ export default function AddTraining({ customerId }) {
   };
 
   const addTraining = () => {
-    fetch("https://customerrestservice-personaltraining.rahtiapp.fi/api/trainings", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(training),
-    })
+    fetch(
+      "https://customerrestservice-personaltraining.rahtiapp.fi/api/trainings",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(training),
+      }
+    )
       .then((response) => {
         if (response.ok) {
           console.log("Training added successfully");
           handleClose();
         } else {
-          console.error("Failed to add training");
           alert("Failed to add training. Please try again.");
         }
       })
       .catch((error) => {
-        console.error("Error adding training:", error);
         alert("Error adding training. Please try again.");
       });
   };
