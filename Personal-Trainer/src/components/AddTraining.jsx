@@ -6,12 +6,15 @@ import {
   DialogTitle,
   TextField,
 } from "@mui/material";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import React, { useState } from "react";
 
 export default function AddTraining({ customerId }) {
   const [open, setOpen] = useState(false);
   const [training, setTraining] = useState({
-    date: "",
+    date: null,
     duration: "",
     activity: "",
     customer: `https://customerrestservice-personaltraining.rahtiapp.fi/api/customers/${customerId}`,
@@ -61,17 +64,19 @@ export default function AddTraining({ customerId }) {
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Add Training Information</DialogTitle>
         <DialogContent>
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            fullWidth
-            variant="standard"
-            type="datetime-local"
-            name="date"
-            value={training.date}
-            onChange={handleChange}
-          />
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DateTimePicker
+              autoFocus
+              label="Date and Time"
+              margin="dense"
+              name="date"
+              value={training.date}
+              onChange={(value) =>
+                handleChange({ target: { name: "date", value } })
+              }
+              fullWidth
+            />
+          </LocalizationProvider>
           <TextField
             required
             margin="dense"
